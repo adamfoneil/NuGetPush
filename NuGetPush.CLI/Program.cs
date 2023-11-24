@@ -52,7 +52,8 @@ await Parser.Default.ParseArguments<Options>(args).WithParsedAsync(async options
 			}
 
 			Console.ForegroundColor = ConsoleColor.Green;
-			Console.WriteLine("Publishing new version...");
+			Console.WriteLine($"Publishing new version {local.Version}");
+			Log.Logger.Information("Publishing new version {version}", local.Version);
 
 			await PushPackageAsync(local.PackageId, options.FeedUrl, options.ApiKey, local.LocalFile);
 		}
