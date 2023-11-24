@@ -11,8 +11,14 @@ internal class Options
 	public string ApiKey { get; set; } = default!;
 
 	[Option('f', "FeedUrl")]
-	public string FeedUrl { get; set; } = "https://api.nuget.org/v3/index.json";
+	public string FeedUrl { get; set; } = default!;
 
 	[Option('l', "LogPath")]
-	public string LogPath { get; set; } = "%localappdata%\\NuGetPush";
+	public string LogPath { get; set; } = default!;
+
+	/// <summary>
+	/// push only when this branch is checked out
+	/// </summary>
+	[Option('b', "PushFromBranch")]
+	public string PushFromBranch { get; set; } = default!;
 }
