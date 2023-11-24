@@ -1,8 +1,0 @@
-{
-  "profiles": {
-    "NuGetPush.CLI": {
-      "commandName": "Project",
-      "commandLineArgs": "--ApiKey \"\" --ProjectPath \"C:\\Users\\adamo\\source\\repos\\Ensync\\Ensync.CLI.SqlServer\""
-    }
-  }
-}
