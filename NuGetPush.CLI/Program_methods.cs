@@ -137,6 +137,8 @@ internal partial class Program
 			Dictionary<string, string> properties = new()
 			{
 				["Configuration"] = "Release",
+				// it's important that you don't run any post-build event otherwise you get recursion
+				// because this console app was triggered by a post-build event
 				["PostBuildEvent"] = string.Empty
 			};
 
