@@ -11,7 +11,7 @@ internal class Options
 	public string ApiKey { get; set; } = default!;
 
 	[Option('f', "FeedUrl")]
-	public string FeedUrl { get; set; } = default!;
+	public string FeedUrl { get; set; } = "https://api.nuget.org/v3/index.json";
 
 	[Option('l', "LogPath")]
 	public string LogPath { get; set; } = default!;
