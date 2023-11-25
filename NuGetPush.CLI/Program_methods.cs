@@ -66,7 +66,9 @@ internal partial class Program
 		return (false, string.Empty, string.Empty);
 	}
 
-	// searches upward from a given path for a global config file of settings
+	// searches upward from a given path for a global config file of settings.
+	// this is how you can make your API key available to all projects in your base dev directory,
+	// keeping it out of source control, but making this convenient to use with any project
 	static Options GetDefaultOptions(string path)
 	{
 		const string BaseFilename = "nugetpush.json";
