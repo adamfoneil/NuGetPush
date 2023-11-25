@@ -196,4 +196,24 @@ internal partial class Program
 			return (false, default, default);
 		}
 	}
+
+	static bool IsPushBranchCheckedOut(Options options)
+	{
+		if (!string.IsNullOrWhiteSpace(options.PushFromBranch))
+		{
+			var gitRepo = FindGetRepository(options.ProjectDirectory);
+			if (gitRepo.Success)
+			{
+				if (!gitRepo.CurrentBranch.Equals(options.PushFromBranch, StringComparison.CurrentCultureIgnoreCase))
+				{
+					Log.Logger.Information(
+						"Current branch {currentBranch} is different from required push branch {pushBranch}, so package won't be published",
+						gitRepo.CurrentBranch, options.PushFromBranch);
+					return false;
+				}
+			}
+		}
+
+		return true;
+	}
 }
