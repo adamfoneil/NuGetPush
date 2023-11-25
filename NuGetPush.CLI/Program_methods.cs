@@ -105,15 +105,18 @@ internal partial class Program
 		return NuGetVersion.Parse(DefaultMinVersion);
 	}
 
-	static (NuGetVersion Version, string PackageId, string LocalFile) GetLocalPackageInfo(string path, Action<string> buildAction)
+	static (NuGetVersion Version, string PackageId, string LocalFile) GetLocalPackageInfo(bool usingPostBuildEvent, string path, Action<string> buildAction)
 	{
 		var projectFullPath = FindProjectFile(path);
 		var collection = new ProjectCollection();
 		var project = collection.LoadProject(projectFullPath);
 
-		var generateOnBuild = bool.Parse(project.GetProperty("GeneratePackageOnBuild").EvaluatedValue);
-		if (generateOnBuild) throw new ArgumentException("Can't use the 'GeneratePackageOnBuild' option because generated packages aren't available to programs during the Post Build event.");
-
+		if (usingPostBuildEvent)
+		{
+			var generateOnBuild = bool.Parse(project.GetProperty("GeneratePackageOnBuild").EvaluatedValue);
+			if (generateOnBuild) throw new ArgumentException("Can't use the 'GeneratePackageOnBuild' option because generated packages aren't available to programs during the Post Build event.");
+		}
+		
 		var version = NuGetVersion.Parse(project.GetPropertyValue("Version"));
 		var packageId = project.GetPropertyValue("PackageId");
 		var packagePath = Path.GetFullPath(Path.Combine(path, project.GetPropertyValue("PackageOutputPath")));
@@ -121,9 +124,12 @@ internal partial class Program
 		var packageFile = packageId + "." + version + ".nupkg";
 		var packageFullPath = Path.Combine(packagePath, packageFile);
 
-		// package and symbols need to be built. This is a separate method to keep certain
-		// basics stable above with the build internals more configurable externally
-		buildAction.Invoke(projectFullPath);
+		if (usingPostBuildEvent)
+		{
+			// package and symbols need to be built. This is a separate method to keep certain
+			// basics stable above with the build internals more configurable externally
+			buildAction.Invoke(projectFullPath);
+		}
 
 		return (version, packageId, packageFullPath);
 	}

@@ -24,7 +24,7 @@ await Parser.Default.ParseArguments<Options>(args).WithParsedAsync(async options
 			.WriteTo.Console(LogEventLevel.Information)
 			.CreateLogger();		
 
-		var local = GetLocalPackageInfo(options.ProjectDirectory, BuildPackage);
+		var local = GetLocalPackageInfo(options.UsingPostBuildEvent, options.ProjectDirectory, BuildPackage);
 		var onlineVersion = await GetOnlinePackageVersionAsync(local.PackageId, options.FeedUrl);
 
 		if (local.Version > onlineVersion)

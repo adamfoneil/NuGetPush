@@ -21,4 +21,7 @@ internal class Options
 	/// </summary>
 	[Option('b', "PushFromBranch")]
 	public string PushFromBranch { get; set; } = default!;
+
+	[Option('e', "UsingPostBuildEvent", HelpText = "Indicates that this was invoked from the Post Build event, which causes packages to be rebuilt internally")]
+	public bool UsingPostBuildEvent { get; set; }
 }
