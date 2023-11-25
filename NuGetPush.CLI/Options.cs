@@ -4,8 +4,8 @@ namespace NuGetPush.CLI;
 
 internal class Options
 {
-	[Option('p', "ProjectPath", Default = ".")]
-	public string ProjectPath { get; set; } = default!;
+	[Option('p', "ProjectDir")]
+	public string ProjectDirectory { get; set; } = default!;
 
 	[Option('k', "ApiKey")]
 	public string ApiKey { get; set; } = default!;
