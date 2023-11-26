@@ -111,12 +111,13 @@ internal partial class Program
 		var collection = new ProjectCollection();
 		var project = collection.LoadProject(projectFullPath);
 
-		if (usingPostBuildEvent)
-		{
-			var generateOnBuild = bool.Parse(project.GetProperty("GeneratePackageOnBuild").EvaluatedValue);
-			if (generateOnBuild) throw new ArgumentException("Can't use the 'GeneratePackageOnBuild' option because generated packages aren't available to programs during the Post Build event.");
-		}
+		var generateOnBuild = bool.Parse(project.GetProperty("GeneratePackageOnBuild")?.EvaluatedValue ?? "false");
 		
+		if (usingPostBuildEvent && generateOnBuild)
+		{			
+			throw new ArgumentException("Can't use the 'GeneratePackageOnBuild' option because generated packages aren't available to programs during the Post Build event.");
+		}
+
 		var version = NuGetVersion.Parse(project.GetPropertyValue("Version"));
 		var packageId = project.GetPropertyValue("PackageId");
 		var packagePath = Path.GetFullPath(Path.Combine(path, project.GetPropertyValue("PackageOutputPath")));
