@@ -43,7 +43,7 @@ internal partial class Program
 	}
 
 	// searches upwards from a given path to try to find the enclosing git repository
-	static (bool Success, string Result, string CurrentBranch) FindGetRepository(string projectPath)
+	static (bool Success, string Result, string CurrentBranch) FindGitRepository(string projectPath)
 	{
 		string path = projectPath;
 
@@ -201,7 +201,7 @@ internal partial class Program
 	{
 		if (!string.IsNullOrWhiteSpace(options.PushFromBranch))
 		{
-			var gitRepo = FindGetRepository(options.ProjectDirectory);
+			var gitRepo = FindGitRepository(options.ProjectDirectory);
 			if (gitRepo.Success)
 			{
 				if (!gitRepo.CurrentBranch.Equals(options.PushFromBranch, StringComparison.CurrentCultureIgnoreCase))
