@@ -54,12 +54,10 @@ internal partial class Program
 	static string ParsePackageId(string path) => Regex.Replace(path, @".(\d+).(\d+).(\d+)", (match) => string.Empty);
 
 
-	static async Task PushPackageAsync(string packageId, string feedUrl, string apiKey, string localFile)
+	static async Task PushPackageAsync(PackageUpdateResource resource, string packageId, string feedUrl, string apiKey, string localFile)
 	{
 		try
-		{
-			var repository = Repository.Factory.GetCoreV3(feedUrl);
-			var resource = await repository.GetResourceAsync<PackageUpdateResource>();
+		{						
 			var cache = new SourceCacheContext();
 
 			await resource.Push([localFile], symbolSource: null,
@@ -68,7 +66,7 @@ internal partial class Program
 				getApiKey: packageSource => apiKey,
 				getSymbolApiKey: packageSource => null,
 				noServiceEndpoint: false,
-				skipDuplicate: false,
+				skipDuplicate: true,
 				symbolPackageUpdateResource: null,
 				NullLogger.Instance);
 		}
