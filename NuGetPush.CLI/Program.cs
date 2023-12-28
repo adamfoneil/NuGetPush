@@ -16,11 +16,12 @@ try
 	var repository = Repository.Factory.GetCoreV3(options.FeedUrl);
 	var resource = await repository.GetResourceAsync<PackageUpdateResource>();
 
+	// the package and symbols are pushed together
 	foreach (var packageGrp in packageFiles.GroupBy(file => file.PackageId))
 	{
 		await resource.Push(
 			packageGrp.Select(p => p.Path).ToArray(), 
-			symbolSource: null,
+			symbolSource: options.SymbolFeedUrl,
 			timeoutInSecond: 120,
 			disableBuffering: false,
 			getApiKey: packageSource => options.ApiKey,
@@ -31,10 +32,9 @@ try
 			NullLogger.Instance);
 
 		Log.Logger.Information("Pushed {packageId}", packageGrp.Key);
-		Console.ForegroundColor = ConsoleColor.Green;
-		Console.WriteLine($"Pushed {packageGrp.Key}");
-		// no need to keep this file locally
-		File.Delete(package.Path);
+
+		// no need to keep these files locally
+		foreach (var file in packageGrp) File.Delete(file.Path);
 	}
 }
 catch (ArgumentException exc)
