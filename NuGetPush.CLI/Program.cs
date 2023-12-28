@@ -24,15 +24,15 @@ try
 			timeoutInSecond: 120,
 			disableBuffering: false,
 			getApiKey: packageSource => options.ApiKey,
-			getSymbolApiKey: packageSource => null,
+			getSymbolApiKey: packageSource => options.ApiKey,
 			noServiceEndpoint: false,
 			skipDuplicate: true,
 			symbolPackageUpdateResource: null,
 			NullLogger.Instance);
 
-		Log.Logger.Information("Pushed {fileType} {packageId}", package.FileType, package.PackageId);
+		Log.Logger.Information("Pushed {packageId}", packageGrp.Key);
 		Console.ForegroundColor = ConsoleColor.Green;
-		Console.WriteLine($"Pushed {package.FileType} {package.PackageId}");
+		Console.WriteLine($"Pushed {packageGrp.Key}");
 		// no need to keep this file locally
 		File.Delete(package.Path);
 	}
