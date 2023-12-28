@@ -8,6 +8,8 @@ try
 	var options = GetOptions(Environment.CurrentDirectory);
 	if (options.ApiKey is null) throw new ArgumentException("Missing API key.");
 
+	options.LogPath ??= Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData), "NuGetPush");
+
 	Log.Logger = InitSerilog(options.LogPath);
 
 	var packageFiles = GetPackageFiles(Environment.CurrentDirectory);
