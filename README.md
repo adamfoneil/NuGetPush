@@ -1,5 +1,12 @@
 # Problem Statement
-I've not found a really easy way to push updated packages to NuGet.org. I've used CI solutions like [AppVeyor](https://www.appveyor.com/) successfully, but I find AppVeyor kind of hard to setup. It has a ton of settings -- and to me therefore a discoverability problem. Although I've gotten it to work for some things, I've also found myself unable to get other projects working, and I couldn't figure out why. I've ended up doing it manually through NuGet.org's manual upload UI. I got tired of doing it manually, so I wanted to take a fresh look automating it in a console app. I figured it should be straightforward to take advantage of Dotnet's post build event to run a console app to push updated packages. I do something like this already with [AzDeploy](https://github.com/adamfoneil/AzDeploy) for a few WinForms apps. I also use [Sleet](https://github.com/emgarten/Sleet) for pushing packages to a custom destination -- packages for personal use that are too specific for a wider NuGet.org audience. But lately I'm pivoting back to NuGet.org for some things, so Sleet is not ideal for that.
+I've not found a really easy way to push updated packages to NuGet.org. You can of course follow [Microsoft's own guidance](https://learn.microsoft.com/en-us/nuget/nuget-org/publish-a-package#use-the-dotnet-cli). This is a bit complicated IMO because you need to have the package filename and your API key handy. You can wrap these in a batch file, but there's too much admin here.
+
+I've used CI solutions like [AppVeyor](https://www.appveyor.com/) successfully, but I find AppVeyor kind of hard to setup. It has a ton of settings -- and to me therefore a discoverability problem. Although I've gotten it to work for some things, I've also found myself unable to get other projects working, and I couldn't figure out why. I've ended up doing it manually through NuGet.org's manual upload UI. I got tired of doing it manually, so I wanted to take a fresh look automating it in a console app. I'd like to be able to navigate to a package build directory and enter a command like this:
+
+```cmd
+nugetpush
+```
+The program should find the packages in the current directory along with your API key, which you've placed in a single, defined location out of source control (much like [Sleet](https://github.com/emgarten/Sleet) does).
 
 # Code Tour
 - [Options](https://github.com/adamfoneil/NuGetPush/blob/master/NuGetPush.CLI/Options.cs) defines available command line options
