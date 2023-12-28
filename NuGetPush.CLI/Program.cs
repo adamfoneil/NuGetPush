@@ -47,3 +47,7 @@ catch (Exception exc)
 {
 	Log.Logger.Error(exc, "Error pushing packages.");
 }
+finally
+{
+	Console.ForegroundColor = ConsoleColor.Gray;
+}
