@@ -6,16 +6,53 @@ using NuGet.Protocol.Core.Types;
 using NuGet.Versioning;
 using NuGetPush.CLI;
 using Serilog;
+using Serilog.Events;
 using System.Diagnostics;
 using System.Text.Json;
+using System.Text.RegularExpressions;
+
+internal enum FileType
+{
+	Package,
+	Symbols
+}
 
 internal partial class Program
 {
-	static void SetProjectFromWorkingDirectory(Options options)
+	static Serilog.ILogger InitSerilog(string path) => new LoggerConfiguration()
+		.WriteTo.File(Path.Combine(path, "NuGetPush.log"), LogEventLevel.Information, rollingInterval: RollingInterval.Month, retainedFileCountLimit: 3)
+		.WriteTo.Console(LogEventLevel.Information)
+		.CreateLogger();
+
+	static IEnumerable<(FileType FileType, string PackageId, string Path)> GetPackageFiles(string path)
 	{
-		var project = IsProjectPath(Environment.CurrentDirectory);
-		options.ProjectDirectory ??= (project.Result) ? project.CsProjectDir! : throw new Exception("Missing project directory");
+		var allFiles = Directory.GetFiles(path, "*.nupkg", SearchOption.TopDirectoryOnly);
+		HashSet<string> results = [];
+
+		foreach (var file in allFiles)
+		{
+			if (IsFileType(file, ".symbols.nupkg", out var symbolPackage) && results.Add(file))
+			{
+				yield return (FileType.Symbols, ParsePackageId(symbolPackage), file);
+			}
+
+			if (IsFileType(file, ".nupkg", out var package) && results.Add(file))
+			{
+				yield return (FileType.Package, ParsePackageId(package), file);
+			}
+		}
 	}
+
+	static bool IsFileType(string path, string suffix, out string parsedPath)
+	{
+		var result = path.EndsWith(suffix, StringComparison.OrdinalIgnoreCase);
+		var lastDir = path.LastIndexOf('\\') + 1;
+		parsedPath = (result) ? path[lastDir..^suffix.Length] : path;
+		return result;
+	}
+
+	static string ParsePackageId(string path) => Regex.Replace(path, @".(\d+).(\d+).(\d+)", (match) => string.Empty);
+
 
 	static async Task PushPackageAsync(string packageId, string feedUrl, string apiKey, string localFile)
 	{
@@ -67,7 +104,7 @@ internal partial class Program
 	// searches upward from a given path for a global config file of settings.
 	// this is how you can make your API key available to all projects in your base dev directory,
 	// keeping it out of source control, but making this convenient to use with any project
-	static Options GetDefaultOptions(string path)
+	static Options GetOptions(string path)
 	{
 		const string BaseFilename = "nugetpush.json";
 
@@ -196,25 +233,5 @@ internal partial class Program
 		{
 			return (false, default, default);
 		}
-	}
-
-	static bool IsPushBranchCheckedOut(Options options)
-	{
-		if (!string.IsNullOrWhiteSpace(options.PushFromBranch))
-		{
-			var gitRepo = FindGitRepository(options.ProjectDirectory);
-			if (gitRepo.Success)
-			{
-				if (!gitRepo.CurrentBranch.Equals(options.PushFromBranch, StringComparison.CurrentCultureIgnoreCase))
-				{
-					Log.Logger.Information(
-						"Current branch {currentBranch} is different from required push branch {pushBranch}, so package won't be published",
-						gitRepo.CurrentBranch, options.PushFromBranch);
-					return false;
-				}
-			}
-		}
-
-		return true;
 	}
 }
