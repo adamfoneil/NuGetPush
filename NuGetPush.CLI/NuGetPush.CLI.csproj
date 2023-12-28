@@ -5,7 +5,28 @@
     <TargetFramework>net8.0</TargetFramework>
     <ImplicitUsings>enable</ImplicitUsings>
     <Nullable>enable</Nullable>
+    <GeneratePackageOnBuild>True</GeneratePackageOnBuild>
+    <PackageId>NuGetPushTool</PackageId>
+    <Title>NuGet Push command</Title>
+    <Version>1.0.0-alpha</Version>
+    <Company></Company>
+    <Description>A command-line utility for pushing NuGet packages</Description>
+    <Copyright>Copyright (c) 2023 Adam O'Neil</Copyright>
+    <PackageProjectUrl>https://github.com/adamfoneil/NuGetPush</PackageProjectUrl>
+    <RepositoryUrl>https://github.com/adamfoneil/NuGetPush</RepositoryUrl>
+    <PackageLicenseExpression>MIT</PackageLicenseExpression>
+    <PackAsTool>True</PackAsTool>
+    <ToolCommandName>nugetpush</ToolCommandName>
+    <Authors>Adam O'Neil</Authors>
+    <PackageReadmeFile>README.md</PackageReadmeFile>
   </PropertyGroup>
+
+  <ItemGroup>
+    <None Include="..\README.md">
+      <Pack>True</Pack>
+      <PackagePath>\</PackagePath>
+    </None>
+  </ItemGroup>
 
   <ItemGroup>
     <PackageReference Include="NuGet.Common" Version="6.8.0" />
