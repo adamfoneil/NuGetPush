@@ -8,15 +8,9 @@ nugetpush
 ```
 The program should find the packages in the current directory along with your API key, which you've placed in a single, defined location out of source control (much like [Sleet](https://github.com/emgarten/Sleet) does).
 
+# Get Started
+
 # Code Tour
 - [Options](https://github.com/adamfoneil/NuGetPush/blob/master/NuGetPush.CLI/Options.cs) defines available command line options
 - [Program.cs](https://github.com/adamfoneil/NuGetPush/blob/master/NuGetPush.CLI/Program.cs) shows the high-level flow
 - [Program_methods.cs](https://github.com/adamfoneil/NuGetPush/blob/master/NuGetPush.CLI/Program_methods.cs) has the low-level implementation
-
-# Remarks
-I had a fair bit of ChatGPT help. See a couple convos I had:
-- [this](https://chat.openai.com/share/a38c9aee-e6b8-413f-a651-a5daa0317c7b)
-- and [this](https://chat.openai.com/share/af0af45d-25e9-466e-b366-bd9d0594546b)
-This didn't give me fully working solutions, but it did give a lot of useful nudges and ideas.
-
-Also, after some reflection, I'm not sure I want to use the Post Build event to trigger a NuGet push because -- as it is now -- it doesn't run any tests. That's a nice thing about CI tools like AppVeyor -- they run your tests before pushing packages.
