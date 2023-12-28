@@ -45,7 +45,5 @@ catch (ArgumentException exc)
 }
 catch (Exception exc)
 {
-	Console.ForegroundColor = ConsoleColor.Red;
-	Console.WriteLine(exc.Message);
 	Log.Logger.Error(exc, "Error pushing packages.");
 }
