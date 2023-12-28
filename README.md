@@ -1,3 +1,5 @@
+[![Nuget](https://img.shields.io/nuget/v/NuGetPushTool)](https://www.nuget.org/packages/NuGetPushTool/)
+
 # Problem Statement
 I've not found a really easy way to push updated packages to NuGet.org. You can of course follow [Microsoft's own guidance](https://learn.microsoft.com/en-us/nuget/nuget-org/publish-a-package#use-the-dotnet-cli). I feel like there's too much admin and manual steps in this approach.
 
@@ -11,7 +13,7 @@ The program should find the packages in the current directory along with your AP
 # Get Started
 1. Install the tool package globally:
 ```
-dotnet tool install --global NuGetPushTool --version 1.0.1
+dotnet tool install --global NuGetPushTool
 ```
 2. If you don't have one, create an API key at NuGet.org. Info about this is [here](https://learn.microsoft.com/en-us/nuget/nuget-org/publish-a-package#create-an-api-key).
 
