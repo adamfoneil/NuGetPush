@@ -1,3 +1,5 @@
+[![Nuget](https://img.shields.io/nuget/v/NuGetPushTool)](https://www.nuget.org/packages/NuGetPushTool/)
+
 # Problem Statement
 I've not found a really easy way to push updated packages to NuGet.org. You can of course follow [Microsoft's own guidance](https://learn.microsoft.com/en-us/nuget/nuget-org/publish-a-package#use-the-dotnet-cli). I feel like there's too much admin and manual steps in this approach.
 
