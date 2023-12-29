@@ -1,4 +1,5 @@
 ﻿using NuGetPush.CLI;
+using NuGetPush.CLI.Static;
 using Serilog;
 using Serilog.Events;
 using System.Text.Json;
@@ -26,12 +27,12 @@ internal partial class Program
 		{
 			if (IsFileType(file, ".symbols.nupkg", out var symbolPackage) && results.Add(file))
 			{
-				yield return (FileType.Symbols, ParsePackageId(symbolPackage), file);
+				yield return (FileType.Symbols, RegexHelper.ParsePackageId(symbolPackage), file);
 			}
 
 			if (IsFileType(file, ".nupkg", out var package) && results.Add(file))
 			{
-				yield return (FileType.Package, ParsePackageId(package), file);
+				yield return (FileType.Package, RegexHelper.ParsePackageId(package), file);
 			}
 		}
 	}
@@ -42,9 +43,7 @@ internal partial class Program
 		var lastDir = path.LastIndexOf('\\') + 1;
 		parsedPath = (result) ? path[lastDir..^suffix.Length] : path;
 		return result;
-	}
-
-	static string ParsePackageId(string path) => Regex.Replace(path, @".(\d+).(\d+).(\d+)", (match) => string.Empty);
+	}	
 
 	// searches upward from a given path for a global config file of settings.
 	// this is how you can make your API key available to all projects in your base dev directory,
