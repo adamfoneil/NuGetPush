@@ -31,6 +31,8 @@ dotnet tool install --global NuGetPushTool
 
 You should now be able to push packages from any directory on your machine that has NuGet packages. Navigate to the directory in a terminal window and type `nugetpush`.
 
+By default, logs are saved in in [local app data\NugetPush](https://github.com/adamfoneil/NuGetPush/blob/master/NuGetPush.CLI/Program.cs#L11).
+
 # Code Tour
 - [Options](https://github.com/adamfoneil/NuGetPush/blob/master/NuGetPush.CLI/Options.cs) defines available command line options
 - [Program.cs](https://github.com/adamfoneil/NuGetPush/blob/master/NuGetPush.CLI/Program.cs) shows the high-level flow
