@@ -3,7 +3,6 @@ using NuGetPush.CLI.Static;
 using Serilog;
 using Serilog.Events;
 using System.Text.Json;
-using System.Text.RegularExpressions;
 
 internal enum FileType
 {

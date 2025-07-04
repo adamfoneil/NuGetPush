@@ -22,7 +22,7 @@ try
 	foreach (var packageGrp in packageFiles.GroupBy(file => file.PackageId))
 	{
 		await resource.Push(
-			packageGrp.Select(p => p.Path).ToArray(), 
+			[.. packageGrp.Select(p => p.Path)], 
 			symbolSource: options.SymbolFeedUrl,
 			timeoutInSecond: 120,
 			disableBuffering: false,
